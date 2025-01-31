@@ -24,6 +24,8 @@ function notifmodule:createnoti(params)
     local type = params.type or "info"
     local customcolor = params.color
     local customicon = params.icon
+    local titlecolor = params.titlecolor or Color3.fromRGB(255, 255, 255)
+    local descriptioncolor = params.descriptioncolor or Color3.fromRGB(180, 180, 180)
     
     local screengui = Instance.new("ScreenGui")
     screengui.Parent = game.CoreGui
@@ -59,7 +61,7 @@ function notifmodule:createnoti(params)
     titletext.Size = UDim2.new(1, -50, 0, 30)
     titletext.Position = UDim2.new(0, 45, 0, 5)
     titletext.BackgroundTransparency = 1
-    titletext.TextColor3 = Color3.fromRGB(255, 255, 255)
+    titletext.TextColor3 = titlecolor
     titletext.TextSize = 16
     titletext.Font = Enum.Font.GothamBold
     titletext.Text = title
@@ -70,7 +72,7 @@ function notifmodule:createnoti(params)
     desctext.Size = UDim2.new(1, -20, 0, 50)
     desctext.Position = UDim2.new(0, 10, 0, 40)
     desctext.BackgroundTransparency = 1
-    desctext.TextColor3 = Color3.fromRGB(180, 180, 180)
+    desctext.TextColor3 = descriptioncolor
     desctext.TextSize = 14
     desctext.Font = Enum.Font.Gotham
     desctext.Text = description
