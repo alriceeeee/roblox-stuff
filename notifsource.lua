@@ -31,21 +31,13 @@ function notifmodule:createnoti(params)
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(0, 300, 0, 100)
     frame.Position = UDim2.new(1, 10, 0.8, 0)
+    frame.BackgroundTransparency = 0.2
     frame.BackgroundColor3 = customcolor or colors[type]
     frame.BorderSizePixel = 0
     frame.Parent = screengui
     
-    local blur = Instance.new("BlurEffect")
-    blur.Size = 15
-    blur.Parent = frame
-    
-    local gradient = Instance.new("UIGradient")
-    gradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, frame.BackgroundColor3:Lerp(Color3.new(1,1,1), 0.1)),
-        ColorSequenceKeypoint.new(1, frame.BackgroundColor3)
-    })
-    gradient.Rotation = 45
-    gradient.Parent = frame
+    local blureffect = Instance.new("BlurEffect", frame)
+    blureffect.Size = 20
     
     local uicorner = Instance.new("UICorner")
     uicorner.CornerRadius = UDim.new(0, 8)
@@ -96,6 +88,7 @@ function notifmodule:createnoti(params)
     slideout:Play()
     
     task.wait(0.5)
+    blureffect:Destroy()
     screengui:Destroy()
 end
 
