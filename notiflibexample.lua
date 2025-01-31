@@ -5,10 +5,11 @@ notif:warn("Warning", "This is a warning notification by alriceeee")
 notif:error("Error", "This is an error notification by alriceeee")
 notif:success("Success", "This is a success notification by alriceeee")
 
-notif:custom({
-    title = "Custom by alriceeee",
-    description = "This is a custom notification by alriceeee",
-    duration = 3,
-    color = Color3.fromRGB(255, 0, 255),
-    icon = "rbxassetid://youriconid"
+notifmodule:custom({
+    title = "Custom Title",
+    description = "Custom Description",
+    duration = 5,
+    color = Color3.fromRGB(50, 50, 50),
+    titlecolor = Color3.fromRGB(255, 0, 0),
+    descriptioncolor = Color3.fromRGB(0, 255, 0)
 })
