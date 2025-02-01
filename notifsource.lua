@@ -14,10 +14,14 @@ local colors = {
     info = Color3.fromRGB(25, 25, 25),
     warn = Color3.fromRGB(255, 155, 0),
     error = Color3.fromRGB(255, 0, 0),
+    
     success = Color3.fromRGB(0, 255, 0)
 }
 
 function notifmodule:createnoti(params)
+    print("Title Color:", params.titlecolor)
+    print("Description Color:", params.descriptioncolor)
+    
     local title = params.title or "Notification"
     local description = params.description or ""
     local duration = params.duration or 5
