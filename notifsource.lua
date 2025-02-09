@@ -16,31 +16,27 @@ local colors = {
     info = Color3.fromRGB(25, 25, 25),
     warn = Color3.fromRGB(255, 155, 0),
     error = Color3.fromRGB(255, 0, 0),
-    
     success = Color3.fromRGB(0, 255, 0)
 }
 
 local function updatenotificationpositions()
     for i = 1, #activenotifications do
         local notification = activenotifications[i]
-        local newy = 0.8 - (i - 1) * 0.12
+        local newy = 0.8 - ((i - 1) * 0.12)
         local newposition = UDim2.new(1, -310, newy, 0)
         tweenservice:Create(notification, TweenInfo.new(0.2), {Position = newposition}):Play()
     end
 end
 
 function notifmodule:createnoti(params)
-    print("Title Color:", params.titlecolor)
-    print("Description Color:", params.descriptioncolor)
-    
     local title = params.title or "Notification"
     local description = params.description or ""
     local duration = params.duration or 5
     local type = params.type or "info"
     local customcolor = params.color
     local customicon = params.icon
-    local titlecolor = params.titlecolor or Color3.fromRGB(0, 0, 0)
-    local descriptioncolor = params.descriptioncolor or Color3.fromRGB(0, 0, 0)
+    local titlecolor = type == "custom" and (params.titlecolor or Color3.fromRGB(0, 0, 0)) or Color3.fromRGB(0, 0, 0)
+    local descriptioncolor = type == "custom" and (params.descriptioncolor or Color3.fromRGB(0, 0, 0)) or Color3.fromRGB(0, 0, 0)
     
     local screengui = Instance.new("ScreenGui")
     screengui.Parent = game.CoreGui
@@ -98,25 +94,27 @@ function notifmodule:createnoti(params)
     table.insert(activenotifications, 1, frame)
     updatenotificationpositions()
     
-    local slidein = tweenservice:Create(frame, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Position = UDim2.new(1, -310, 0.8, 0)})
+    local slidein = tweenservice:Create(frame, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Position = UDim2.new(1, -310, frame.Position.Y.Scale, 0)})
     slidein:Play()
     
-    task.wait(duration)
-    
-    local slideout = tweenservice:Create(frame, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Position = UDim2.new(1, 10, frame.Position.Y.Scale, 0)})
-    slideout:Play()
-    
-    for i = 1, #activenotifications do
-        if activenotifications[i] == frame then
-            table.remove(activenotifications, i)
-            break
+    task.spawn(function()
+        task.wait(duration)
+        
+        local slideout = tweenservice:Create(frame, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Position = UDim2.new(1, 10, frame.Position.Y.Scale, 0)})
+        slideout:Play()
+        
+        for i = 1, #activenotifications do
+            if activenotifications[i] == frame then
+                table.remove(activenotifications, i)
+                break
+            end
         end
-    end
-    
-    updatenotificationpositions()
-    task.wait(0.5)
-    blureffect:Destroy()
-    screengui:Destroy()
+        
+        updatenotificationpositions()
+        task.wait(0.5)
+        blureffect:Destroy()
+        screengui:Destroy()
+    end)
 end
 
 function notifmodule:notify(title, description, duration)
