@@ -39,8 +39,8 @@ function notifmodule:createnoti(params)
     local type = params.type or "info"
     local customcolor = params.color
     local customicon = params.icon
-    local titlecolor = params.titlecolor or Color3.fromRGB(255, 255, 255)
-    local descriptioncolor = params.descriptioncolor or Color3.fromRGB(180, 180, 180)
+    local titlecolor = params.titlecolor or Color3.fromRGB(0, 0, 0)
+    local descriptioncolor = params.descriptioncolor or Color3.fromRGB(0, 0, 0)
     
     local screengui = Instance.new("ScreenGui")
     screengui.Parent = game.CoreGui
