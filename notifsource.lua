@@ -3,6 +3,8 @@ local notifmodule = {}
 local tweenservice = game:GetService("TweenService")
 local uis = game:GetService("UserInputService")
 
+local activenotifications = {}
+
 local icons = {
     info = "rbxassetid://11401835376",
     warn = "rbxassetid://11401835376",
@@ -17,6 +19,15 @@ local colors = {
     
     success = Color3.fromRGB(0, 255, 0)
 }
+
+local function updatenotificationpositions()
+    for i = 1, #activenotifications do
+        local notification = activenotifications[i]
+        local newy = 0.8 - (i - 1) * 0.12
+        local newposition = UDim2.new(1, -310, newy, 0)
+        tweenservice:Create(notification, TweenInfo.new(0.2), {Position = newposition}):Play()
+    end
+end
 
 function notifmodule:createnoti(params)
     print("Title Color:", params.titlecolor)
@@ -84,15 +95,25 @@ function notifmodule:createnoti(params)
     desctext.TextWrapped = true
     desctext.Parent = frame
     
-    local slidein = tweenservice:Create(frame, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Position = UDim2.new(1, -310, 0.8, 0)})
-    local slideout = tweenservice:Create(frame, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Position = UDim2.new(1, 10, 0.8, 0)})
+    table.insert(activenotifications, 1, frame)
+    updatenotificationpositions()
     
+    local slidein = tweenservice:Create(frame, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Position = UDim2.new(1, -310, 0.8, 0)})
     slidein:Play()
     
     task.wait(duration)
     
+    local slideout = tweenservice:Create(frame, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Position = UDim2.new(1, 10, frame.Position.Y.Scale, 0)})
     slideout:Play()
     
+    for i = 1, #activenotifications do
+        if activenotifications[i] == frame then
+            table.remove(activenotifications, i)
+            break
+        end
+    end
+    
+    updatenotificationpositions()
     task.wait(0.5)
     blureffect:Destroy()
     screengui:Destroy()
