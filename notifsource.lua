@@ -5,18 +5,31 @@ local uis = game:GetService("UserInputService")
 
 local activenotifications = {}
 
-local icons = {
-    info = "rbxassetid://11401835376",
-    warn = "rbxassetid://11401835376",
-    error = "rbxassetid://11401835376",
-    success = "rbxassetid://11401835376"
-}
-
-local colors = {
-    info = Color3.fromRGB(25, 25, 25),
-    warn = Color3.fromRGB(255, 155, 0),
-    error = Color3.fromRGB(255, 0, 0),
-    success = Color3.fromRGB(0, 255, 0)
+local config = {
+    icons = {
+        info = "rbxassetid://11401835376",
+        warn = "rbxassetid://11401835376",
+        error = "rbxassetid://11401835376",
+        success = "rbxassetid://11401835376"
+    },
+    colors = {
+        info = Color3.fromRGB(25, 25, 25),
+        warn = Color3.fromRGB(255, 155, 0),
+        error = Color3.fromRGB(255, 0, 0),
+        success = Color3.fromRGB(0, 255, 0),
+        text = {
+            title = Color3.fromRGB(0, 0, 0),
+            description = Color3.fromRGB(0, 0, 0)
+        },
+        stroke = {
+            lerp = Color3.new(1, 1, 1),
+            lerpamount = 0.2
+        },
+        custom = {
+            default_title = Color3.fromRGB(0, 0, 0),
+            default_description = Color3.fromRGB(0, 0, 0)
+        }
+    }
 }
 
 local function updatenotificationpositions()
@@ -35,8 +48,8 @@ function notifmodule:createnoti(params)
     local type = params.type or "info"
     local customcolor = params.color
     local customicon = params.icon
-    local titlecolor = type == "custom" and (params.titlecolor or Color3.fromRGB(0, 0, 0)) or Color3.fromRGB(0, 0, 0)
-    local descriptioncolor = type == "custom" and (params.descriptioncolor or Color3.fromRGB(0, 0, 0)) or Color3.fromRGB(0, 0, 0)
+    local titlecolor = type == "custom" and (params.titlecolor or config.colors.custom.default_title) or config.colors.text.title
+    local descriptioncolor = type == "custom" and (params.descriptioncolor or config.colors.custom.default_description) or config.colors.text.description
     
     local screengui = Instance.new("ScreenGui")
     screengui.Parent = game.CoreGui
@@ -45,7 +58,7 @@ function notifmodule:createnoti(params)
     frame.Size = UDim2.new(0, 300, 0, 100)
     frame.Position = UDim2.new(1, 10, 0.8, 0)
     frame.BackgroundTransparency = 0.2
-    frame.BackgroundColor3 = customcolor or colors[type]
+    frame.BackgroundColor3 = customcolor or config.colors[type]
     frame.BorderSizePixel = 0
     frame.Parent = screengui
     
@@ -57,7 +70,7 @@ function notifmodule:createnoti(params)
     uicorner.Parent = frame
     
     local stroke = Instance.new("UIStroke")
-    stroke.Color = frame.BackgroundColor3:Lerp(Color3.new(1,1,1), 0.2)
+    stroke.Color = frame.BackgroundColor3:Lerp(config.colors.stroke.lerp, config.colors.stroke.lerpamount)
     stroke.Thickness = 1.5
     stroke.Parent = frame
     
@@ -65,7 +78,7 @@ function notifmodule:createnoti(params)
     icon.Size = UDim2.new(0, 30, 0, 30)
     icon.Position = UDim2.new(0, 10, 0, 5)
     icon.BackgroundTransparency = 1
-    icon.Image = customicon or icons[type]
+    icon.Image = customicon or config.icons[type]
     icon.Parent = frame
     
     local titletext = Instance.new("TextLabel")
