@@ -5,6 +5,7 @@
 	Final Version
 	Developed by Moon
 	Modified for Infinite Yield
+	modified by alriceee for remote firing support (no args)
 	
 	Dex is a debugging suite designed to help the user debug games and find any potential vulnerabilities.
 ]]
